@@ -61,16 +61,20 @@ export function initAdelControls() {
         const videoContainer = document.getElementById('adel-figure');
         const videoControls = document.getElementById('adel-controls');
         // make controls look niceer
-        videoControls.style.display = 'block';
+        videoContainer.style.display = 'block';
         // hide native controls
         videoDOM.controls = false;
-
         // contol vars
         const playpause = document.getElementById('adel-playpause');
+        const playpauseico = document.getElementById('adel-playpause-icon');
         const mute = document.getElementById('adel-mute');
+        const muteico = document.getElementById('adel-mute-icon');
         const volinc = document.getElementById('adel-volinc');
+        const volincico = document.getElementById('adel-volinc-icon');
         const voldec = document.getElementById('adel-voldec');
+        const voldecico = document.getElementById('adel-voldec-icon');
         const fullscreen = document.getElementById('adel-fullscreen');
+        const fullscreenico = document.getElementById('adel-fullscreen-icon');
         // this one's a long one...
         const fullScreenCheck = !!(document.fullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled || document.webkitSupportsFullscreen || document.webkitFullscreenEnabled || document.createElement('video').webkitRequestFullScreen);
 
@@ -78,17 +82,32 @@ export function initAdelControls() {
         if (!fullScreenCheck) {
             fullscreen.style.display = "none";
         }
-
+        // set all icons to be white
+        playpauseico.style.color = "white";
+        muteico.style.color = "white";
+        volincico.style.color = "white";
+        voldecico.style.color = "white";
+        fullscreenico.style.color = "white";
         // control bootstrapping complete, now we add our listeners
         // playpause listener
         playpause.addEventListener('click', (e) => {
-            if (videoDOM.paused) videoDOM.play();
-            else videoDOM.pause();
+            if (videoDOM.paused) {
+                videoDOM.play();
+
+            } else {
+                videoDOM.pause();
+                playpauseico.innerText = "play_circle_filled"
+            }
         })
 
         // mute listener
         mute.addEventListener('click', (e) => {
             videoDOM.muted = !videoDOM.muted;
+            if (videoDOM.muted) {
+                muteico.innerText = "volume_down";
+            } else {
+                muteico.innerText = "volume_off";
+            }
         })
 
         // volincrease listener
@@ -121,14 +140,14 @@ export function initAdelControls() {
                 if (curVol > 0) videoDOM.volume -= 0.1;
             }
         }
-
         const fullscreenHandler = function () {
             if (fullscreenState()) {
-                // we're in fs mode
+                // we're in fs mode, exit
                 if (document.exitFullscreen) document.exitFullscreen();
                 else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
                 else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
                 else if (document.msExitFullscreen) document.msExitFullscreen();
+
                 setFullscreenData(false);
             } else {
                 // request fs mode
@@ -136,6 +155,7 @@ export function initAdelControls() {
                 else if (videoContainer.mozRequestFullScreen) videoContainer.mozRequestFullScreen();
                 else if (videoContainer.webkitRequestFullScreen) videoContainer.webkitRequestFullScreen();
                 else if (videoContainer.msRequestFullscreen) videoContainer.msRequestFullscreen();
+
                 setFullscreenData(true);
             }
         }
@@ -148,9 +168,15 @@ export function initAdelControls() {
 
         const setFullscreenData = function (state) {
             videoContainer.setAttribute('data-fullscreen', !!state);
+            if (state) {
+                fullscreenico.innerText = "fullscreen_exit";
+            } else {
+                fullscreenico.innerText = "fullscreen";
+            }
         }
 
         // listen for state changes and set attr accordingly
+        // fullscreen state
         document.addEventListener('fullscreenchange', function (e) {
             setFullscreenData(!!(document.fullscreen || document.fullscreenElement));
         });
@@ -165,6 +191,15 @@ export function initAdelControls() {
 
         document.addEventListener('msfullscreenchange', function (e) {
             setFullscreenData(!!document.msFullscreenElement);
+        });
+
+        // play/pause state
+        videoDOM.addEventListener('pause', (e) => {
+            playpauseico.innerText = "play_circle_filled";
+        });
+
+        videoDOM.addEventListener('play', (e) => {
+            playpauseico.innerText = "pause_circle_filled";
         });
     }
 }

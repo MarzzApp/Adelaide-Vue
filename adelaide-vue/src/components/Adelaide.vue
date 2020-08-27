@@ -24,23 +24,38 @@
           <li><button
               id="adel-playpause"
               type="button"
-            >Play/Pause</button></li>
+            ><i
+                id="adel-playpause-icon"
+                class="material-icons"
+              >play_circle_filled</i></button></li>
           <li><button
               id="adel-mute"
               type="button"
-            >Mute/Unmute</button></li>
+            ><i
+                id="adel-mute-icon"
+                class="material-icons"
+              >volume_off</i></button></li>
           <li><button
               id="adel-volinc"
               type="button"
-            >Vol+</button></li>
+            ><i
+                id="adel-volinc-icon"
+                class="material-icons"
+              >volume_up</i></button></li>
           <li><button
               id="adel-voldec"
               type="button"
-            >Vol-</button></li>
+            ><i
+                id="adel-voldec-icon"
+                class="material-icons"
+              >volume_down</i></button></li>
           <li><button
               id="adel-fullscreen"
               type="button"
-            >Fullscreen</button></li>
+            ><i
+                id="adel-fullscreen-icon"
+                class="material-icons"
+              >fullscreen</i></button></li>
         </ul>
       </figure>
     </div>
@@ -66,12 +81,31 @@ video::-webkit-media-controls {
   display: none !important;
 }
 .cust-controls {
-  z-index: 2147483647;
+  /* z-index: 2147483647; */
+  width: 80%;
   margin: auto;
 }
 
 li {
   display: inline;
   float: left;
+}
+
+#adel-figure {
+  position: relative;
+}
+
+#adel-controls {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 2px;
+}
+video {
+  width: 100% !important;
+  height: auto !important;
+}
+#adel-container {
+  width: 100vw;
 }
 </style>
